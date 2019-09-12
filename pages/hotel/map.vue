@@ -45,5 +45,5 @@ export default {
 </script>
 
 <style scoped >
-    #container {width:500px; height: 500px; }  
+    #container {width:420px; height: 260px; }  
 </style>
