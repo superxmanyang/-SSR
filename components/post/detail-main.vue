@@ -32,28 +32,7 @@
         <p>点赞({{post.like|like}})</p>
       </div>
     </el-row>
-    <!-- 添加评论 -->
-    <div class="add-comments">
-      <p>评论</p>
-      <el-input v-model="comments" placeholder="请输入内容"></el-input>
-      <el-row type="flex" justify="space-between" class="upload">
-        <!-- 上传图片 -->
-        <el-upload
-          action="http://127.0.0.1:1337/upload"
-          list-type="picture-card"
-          :on-preview="handlePictureCardPreview"
-          :on-remove="handleRemove"
-          :data="{files:'4'}"
-          :on-change="before"
-        >
-          <i class="el-icon-plus"></i>
-        </el-upload>
-        <el-dialog :visible.sync="dialogVisible">
-          <img width="100%" :src="dialogImageUrl" alt />
-        </el-dialog>
-        <el-button type="primary" style="width:60px;height:30px;padding:0">提交</el-button>
-      </el-row>
-    </div>
+ 
   </div>
 </template>
 
@@ -66,22 +45,18 @@ export default {
       post: {
         comments: []
       },
-      // 发表评论
-      comments: "",
-
+    
       commentsList: [],
-      // 上传图片显示
-      dialogVisible: false,
-      dialogImageUrl: "",
+    
       token: "",
-      id: ""
+      id:''
     };
   },
   filters: {
     // 转换时间
     time,
     like(value) {
-      console.log(value);
+   
       if (value === null) {
         return 0;
       } else {
@@ -90,26 +65,17 @@ export default {
     }
   },
   methods: {
+   
     init() {
       // 获取文章详情
       this.$axios({
         url: "/posts",
-        params: { id: this.id }
+        params: { id: this.id}
       }).then(res => {
         this.post = res.data.data[0];
       });
     },
-    // 图片上传事件
-    handleRemove(file, fileList) {
-      console.log(file, fileList);
-    },
-    handlePictureCardPreview(file) {
-      this.dialogImageUrl = file.url;
-      this.dialogVisible = true;
-    },
-    before(file, fileList) {
-      console.log("上传前", file, fileList);
-    },
+ 
     // 点赞
     giveFive() {
       this.$axios({
@@ -209,23 +175,6 @@ export default {
       }
     }
   }
-  // 添加评论
-  .add-comments {
-    margin-bottom: 30px;
-    // 上传组件大小
-    /deep/ .el-upload--picture-card,
-    /deep/.el-upload-list__item {
-      width: 100px;
-      height: 100px;
-      line-height: 98px;
-    }
-    .upload {
-      margin-top: 10px;
-      input {
-        width: 80px;
-        height: 50px;
-      }
-    }
-  }
+
 }
 </style>
