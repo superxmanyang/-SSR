@@ -25,16 +25,26 @@
       <div class="fabu">
         <el-button size="small" type="primary" @click="handelClick">发布</el-button>
         <span>或者</span>
-        <span class="caogao">保存到草稿箱</span>
+        <span class="caogao" @click="handelCucun">保存到草稿箱</span>
       </div>
     </div>
     <div class="caogaoxiang">
-      <span>草稿箱(0)</span>
+      <p>草稿箱({{locList.length}})</p>
+      <div class="caogao" v-for="(item,index) in locList" :key="index" @click="handelXunRan(index)">
+        <span>
+          {{item.title}}
+          <i class="el-icon-edit"></i>
+        </span>
+        <br />
+        <p>{{item.time}}</p>
+      </div>
     </div>
   </div>
 </template>
 
 <script>
+import moment from "moment";
+
 let VueEditor;
 if (process.browser) {
   VueEditor = require("vue-word-editor").default;
@@ -51,8 +61,12 @@ export default {
         //   文章内容
         content: "",
         // 城市编号
-        code: ""
+        code: "",
+        // 当前时间
+        time: ""
       },
+      // 存储的数据
+      locList: [],
       //   上传图片的名称
       name: "",
       //   上传图片的地址
@@ -110,10 +124,64 @@ export default {
       }
     };
   },
+  mounted() {
+    // 获取本地的搜索的历史记录
+    const create = JSON.parse(localStorage.getItem("post")) || [];
+    this.locList = create;
+  },
   components: {
     VueEditor
   },
   methods: {
+    // 点击草稿箱渲染出来数据
+    handelXunRan(index){
+      console.log(index)
+      this.form.title=this.locList[index].title
+      this.form.city=this.locList[index].city
+      this.$refs.vueEditor.editor.root.innerHTML=this.locList[index].content
+      console.log(this.$refs.vueEditor.editor.root.innerHTML)
+    },
+    // 点击存储到草稿箱
+    handelCucun() {
+      //   输入标题框
+      let title = this.form.title;
+      //   选择城市
+      let city = this.form.city;
+      //   文章内容
+      this.form.content = this.$refs.vueEditor.editor.root.innerHTML;
+      // 当前时间
+      let time = new Date();
+      this.form.time = moment(time).format(`YYYY-MM-DD`);
+      console.log(title, city);
+      // if(!token){
+      //   thi.$route.path('/user/login')
+      // }
+
+      // 把本地存储先拿出来
+      const create = JSON.parse(localStorage.getItem("post")) || [];
+      create.push(this.form);
+
+      this.locList = create;
+      // 把搜索的条件保存到本地
+      localStorage.setItem("post", JSON.stringify(create));
+      // 再取一次数据
+      const newCreate = JSON.parse(localStorage.getItem("post")) || [];
+
+      this.locList = newCreate;
+
+      //   清空富文本框
+      this.$refs.vueEditor.editor.root.innerHTML = "";
+      this.form = {
+        //   输入标题框
+        title: "",
+        //   选择城市
+        city: "",
+        //   文章内容
+        content: "",
+        // 城市编号
+        code: ""
+      };
+    },
     // 出发城市输入框获得焦点时触发
     // value 是选中的值，cb是回调函数，接收要展示的列表
     queryDepartSearch(value, cb) {
@@ -127,6 +195,7 @@ export default {
         url: "/airs/city",
         params: { name: this.form.city }
       }).then(res => {
+        console.log(res)
         // 解构data
         const { data } = res.data;
         // 创建一个新数组
@@ -134,7 +203,7 @@ export default {
         // 遍历data
         data.forEach(v => {
           newData.push(v);
-          v.value = v.name.replace("市", "");
+          v.value = v.name;
         });
         console.log(newData);
         // 默认选中第一个
@@ -151,12 +220,13 @@ export default {
       this.form.destCity = item.value;
       this.form.destCode = item.sort;
     },
+    // 发布
     handelClick() {
       this.$axios({
         url: "/posts",
         method: "POST",
         headers: {
-          Authorization: `Bearer ${this.$store.state.user.userInof.token}`
+          Authorization: `Bearer ${this.$store.state.user.userInfo.token}`
         },
         data: {
           content: this.$refs.vueEditor.editor.root.innerHTML,
@@ -192,6 +262,7 @@ export default {
   margin: 0 auto;
   padding-top: 20px;
   position: relative;
+  background: #e8d5b5;
   .contont {
     width: 750px;
     height: 705px;
@@ -202,7 +273,7 @@ export default {
     }
     .title-xq {
       font-size: 12px;
-      color: #999;
+      color: #666;
       margin-bottom: 10px;
     }
     .inputContainer {
@@ -214,6 +285,11 @@ export default {
     .edidor {
       margin-top: 20px;
       height: 400px;
+    }
+    .ql-editor{
+      // background:url(https://ss0.bdstatic.com/70cFvHSh_Q1YnxGkpoWK1HF6hhy/it/u=3818384369,377098219&fm=26&gp=0.jpg) no-repeat;
+      // background-size:100%;
+      // background: #e8d5b5;
     }
     .youwan {
       margin-top: 70px;
@@ -237,16 +313,35 @@ export default {
   }
   .caogaoxiang {
     width: 150px;
-    height: 50px;
+    padding: 10px;
     color: #666;
     position: absolute;
     top: 20px;
     left: 800px;
     border: 1px #999 solid;
     margin-top: 5px;
-    span {
-      padding: 10px;
-      line-height: 40px;
+    .caogao {
+      font-size: 16px;
+      :nth-child(1) {
+        &:hover {
+          color: orange;
+          cursor: pointer;
+          text-decoration: underline;
+        }
+      }
+      span {
+        color:#111;
+        font-weight: 500;
+      }
+      p {
+        font-size: 14px;
+        color:#999;
+      }
+    }
+
+    p {
+      line-height: 20px;
+      margin-bottom: 5px;
     }
   }
 }
