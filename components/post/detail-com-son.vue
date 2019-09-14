@@ -13,6 +13,13 @@
       <!-- 子组件 -->
 
       <div class="main" v-html="comments.content"></div>
+      <div class="img" v-if="comments.pics.length>0">
+        <img
+          :src="$axios.defaults.baseURL+item.url"
+          v-for="(item,index) in comments.pics"
+          :key="index"
+        />
+      </div>
       <div class="recall">
         <span @click="recall(comments)">回复</span>
       </div>
@@ -33,11 +40,10 @@ export default {
   methods: {
     // 回复评论
     recall(comments) {
-
-      this.$store.commit('post/newcomment',true)
-      this.$store.commit('post/setrecallInfo',comments)
-      console.log(comments)
-      console.log(456,this.$store.state.post.newComment)
+      this.$store.commit("post/newcomment", comments);
+      this.$store.commit("post/setrecallInfo", comments);
+      console.log(comments);
+      console.log(456, this.$store.state.post.newComment);
     }
   },
   filters: {
@@ -64,14 +70,17 @@ export default {
     &:last-child {
       border-bottom: 0;
     }
-    img {
-      width: 16px;
-      height: 16px;
-      vertical-align: middle;
+    .left {
+      img {
+        width: 16px;
+        height: 16px;
+        vertical-align: middle;
+      }
+      i {
+        color: #999;
+      }
     }
-    i {
-      color: #999;
-    }
+
     .main {
       padding-top: 10px;
       &:hover {
@@ -80,6 +89,16 @@ export default {
             display: block;
           }
         }
+      }
+    }
+    .img {
+      img {
+        width: 200px;
+
+        padding: 0 5px;
+      }
+      &:nth-child(4n) {
+        margin-right: 0;
       }
     }
     .recall {

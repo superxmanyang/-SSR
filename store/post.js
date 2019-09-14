@@ -2,7 +2,7 @@
 export const state = () => {
     return {
         // 更新评论
-        newComment:false,
+        newComment:'',
         recallInfo:{}
     }
 }

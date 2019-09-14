@@ -6,10 +6,10 @@
       <div style="padding:10px 0">
         <span class="reCallMan" v-if="nickName">
           回复 @{{nickName}}
-          <i @click="nickName=''">x</i>
+          <i @click="cancel">x</i>
         </span>
       </div>
-      <el-input v-model="comment.content" placeholder="请输入内容"></el-input>
+      <el-input v-model="comment.content" placeholder="请输入内容" @keydown.native.enter="subComment"></el-input>
       <el-row type="flex" justify="space-between" class="upload">
         <!-- 上传图片 -->
         <el-upload
@@ -19,7 +19,7 @@
           :on-remove="handleRemove"
           :on-success="successUpload"
           :headers="{Accept:'application/json, text/plain, */*'}"
-          name='files'
+          name="files"
         >
           <i class="el-icon-plus"></i>
         </el-upload>
@@ -49,7 +49,11 @@
           </div>
           <div class="main" v-html="item.content"></div>
           <div class="img" v-if="item.pics.length>0">
-            <img :src="$axios.defaults.baseURL+item.url" v-for="(item,index) in item.pics" :key="index">
+            <img
+              :src="$axios.defaults.baseURL+item.url"
+              v-for="(item,index) in item.pics"
+              :key="index"
+            />
           </div>
           <div class="recall">
             <span @click="recall(item)">回复</span>
@@ -96,21 +100,23 @@ export default {
         content: "",
         post: "",
         follow: "",
-        pics:[]
+        pics: []
       },
       // 回复哪个
-      nickName: false
+      nickName: ""
     };
   },
   mounted() {
     // 页面刷新把显示@隐藏
-    this.$store.commit("post/newcomment", false);
-    this.nickName = false;
+    this.$store.commit("post/newcomment", "");
+    this.nickName = "";
     this.comment.post = this.$route.query.id;
     setTimeout(() => {
       this.getcomments.post = this.$route.query.id;
 
       this.init();
+      this.nickName = "";
+      this.comment.follow = "";
     }, 10);
     // console.log(1234, this.$store.state.post.newComment);
   },
@@ -118,7 +124,11 @@ export default {
   methods: {
     // 提交评论
     subComment() {
-      console.log(this.comment)
+      console.log("发送的数据", this.comment);
+      if (this.comment.content === "") {
+        this.$message.info("内容不能为空");
+        return;
+      }
       this.$axios({
         url: "/comments",
         method: "POST",
@@ -133,6 +143,7 @@ export default {
           this.comment.content = "";
           this.init();
           this.nickName = "";
+          this.comment.follow = "";
         }
       });
     },
@@ -146,7 +157,7 @@ export default {
     },
     successUpload(file, fileList) {
       console.log("上传前", file, fileList);
-      this.comment.pics.push(file[0])
+      this.comment.pics.push(file[0]);
     },
     // 分页
     handleSizeChange(val) {
@@ -174,6 +185,12 @@ export default {
     recall(item) {
       this.comment.follow = item.id;
       this.nickName = item.account.nickname;
+      console.log("id", this.comment.follow);
+    },
+    // 取消回复
+    cancel() {
+      this.nickName = "";
+      this.comment.follow = "";
     }
   },
   filters: {
@@ -181,12 +198,11 @@ export default {
   },
   watch: {
     "$store.state.post.newComment"(n, o) {
-      this.nickName = n;
+      this.nickName = n.account.nickname;
+      this.comment.follow = n.id;
     },
     "$store.state.post.recallInfo"(n, o) {
       // console.log(456445645465, n);
-
-      this.comment.follow = n.id;
     }
   }
 };
@@ -278,15 +294,14 @@ export default {
         }
       }
     }
-    .img{
-      img{
-        width:200px;
-    
-      padding: 0 5px;
+    .img {
+      img {
+        width: 200px;
 
+        padding: 0 5px;
       }
-      &:nth-child(4n){
-margin-right: 0
+      &:nth-child(4n) {
+        margin-right: 0;
       }
     }
     .recall {
