@@ -31,11 +31,12 @@
     </div>
     <div class="caogaoxiang">
       <p>草稿箱({{locList.length}})</p>
-      <div class="caogao" v-for="(item,index) in locList" :key="index" @click="handelXunRan(index)">
-        <span>
+      <div class="caogao" v-for="(item,index) in locList" :key="index">
+        <span @click="handelXunRan(index)">
           {{item.title}}
           <i class="el-icon-edit"></i>
         </span>
+        <i class="el-icon-delete shanchu" @click="handelShanChu(index)"></i>
         <br />
         <p>{{item.time}}</p>
       </div>
@@ -163,6 +164,12 @@ export default {
         return;
       }
 
+      // 标题
+      if (!this.form.code) {
+        this.$message.error("请输入正确的城市");
+        return;
+      }
+
       //   输入标题框
       let title = this.form.title;
       //   选择城市
@@ -185,9 +192,8 @@ export default {
 
       // 当存储的数据大于5就覆盖掉最后一个
       if (this.locList.length > 5) {
-        this.locList.splice(4,1)
+        this.locList.splice(4, 1);
       }
-
 
       // 把搜索的条件保存到本地
       localStorage.setItem("post", JSON.stringify(create));
@@ -196,7 +202,8 @@ export default {
 
       this.locList = newCreate;
 
-      console.log(this.locList)
+      console.log(this.locList);
+      this.$message.success("最新存储以放在草稿箱的最上面");
       //   清空富文本框
       this.$refs.vueEditor.editor.root.innerHTML = "";
       this.form = {
@@ -269,6 +276,12 @@ export default {
         return;
       }
 
+      // 标题
+      if (!this.form.code) {
+        this.$message.error("请输入正确的城市");
+        return;
+      }
+      // 发起提交的请求
       this.$axios({
         url: "/posts",
         method: "POST",
@@ -300,6 +313,34 @@ export default {
           };
         }
       });
+    },
+    handelShanChu(index) {
+      this.$confirm("此操作将永久删除该文件, 是否继续?", "提示", {
+        confirmButtonText: "确定",
+        cancelButtonText: "取消",
+        type: "warning"
+      })
+        .then(() => {
+          // 取一次数据
+          const newCreate = JSON.parse(localStorage.getItem("post")) || [];
+          // 赋值
+          this.locList = newCreate;
+          // 根据索引删除
+          this.locList.splice(index, 1);
+          // 再次存储回去
+          localStorage.setItem("post", JSON.stringify(this.locList));
+
+          this.$message({
+            type: "success",
+            message: "删除成功!"
+          });
+        })
+        .catch(() => {
+          this.$message({
+            type: "info",
+            message: "已取消删除"
+          });
+        });
     }
   }
 };
@@ -322,7 +363,7 @@ export default {
     }
     .title-xq {
       font-size: 12px;
-      color: #666;
+      color: #0088ff;
       margin-bottom: 10px;
     }
     .inputContainer {
@@ -336,10 +377,8 @@ export default {
       height: 400px;
     }
     .ql-editor {
-      background: url(http://img0.imgtn.bdimg.com/it/u=2362088077,4052528931&fm=26&gp=0.jpg)no-repeat;
-      background-size: 100%;
-      color: skyblue;
-
+      color: #ffae00;
+      font-size: 14px;
     }
     .youwan {
       margin-top: 70px;
@@ -363,7 +402,7 @@ export default {
   }
   .caogaoxiang {
     width: 150px;
-    padding: 10px;
+    padding: 10px 20px 0px 10px;
     color: #666;
     position: absolute;
     top: 20px;
@@ -379,8 +418,14 @@ export default {
           text-decoration: underline;
         }
       }
+      .shanchu {
+        cursor: pointer;
+        position: absolute;
+        right: 15px;
+        margin-top: 5px;
+      }
       span {
-        color: #111;
+        color: #666;
         font-weight: 500;
       }
       p {
