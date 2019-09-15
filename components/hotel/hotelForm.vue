@@ -274,7 +274,7 @@
     </el-row>
     <div class="block">
       <el-pagination prev-text="上一页" next-text="下一页" layout="prev, pager, next" :total="1000">
-        <div></div>
+        
       </el-pagination>
     </div>
   </div>
@@ -436,5 +436,9 @@ export default {
 .underline {
   padding-bottom: 20px;
   border-bottom: 1px solid #dcdfe6;
+}
+.block{
+  float: right;
+  border: 1px solid #dcdfe6;
 }
 </style>
