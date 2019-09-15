@@ -112,17 +112,13 @@ export default {
       this.init();
     }, 10);
   },
-  watch: {
-    $route() {
-      this.init();
-    }
-  },
+
   methods: {
     // 提交评论
     subComment() {
       this.comment.post = this.$route.query.id;
 
-      if (this.comment.content !== "" || this.comment.pics.lenght!=='') {
+      if (this.comment.content !== "" || this.comment.pics.lenght !== "") {
         this.$axios({
           url: "/comments",
           method: "POST",
@@ -208,8 +204,9 @@ export default {
       this.nickName = n.account.nickname;
       this.comment.follow = n.id;
     },
-    "$store.state.post.recallInfo"(n, o) {
-      // console.log(456445645465, n);
+   
+    $route() {
+      this.init();
     }
   }
 };

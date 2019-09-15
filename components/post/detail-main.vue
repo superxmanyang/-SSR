@@ -32,7 +32,6 @@
         <p>点赞({{post.like|like}})</p>
       </div>
     </el-row>
- 
   </div>
 </template>
 
@@ -45,18 +44,17 @@ export default {
       post: {
         comments: []
       },
-    
+
       commentsList: [],
-    
+
       token: "",
-      id:''
+      id: ""
     };
   },
   filters: {
     // 转换时间
     time,
     like(value) {
-   
       if (value === null) {
         return 0;
       } else {
@@ -65,18 +63,17 @@ export default {
     }
   },
   methods: {
-   
     init() {
-       this.id = this.$route.query.id
+      this.id = this.$route.query.id;
       // 获取文章详情
       this.$axios({
         url: "/posts",
-        params: { id:this.id}
+        params: { id: this.id }
       }).then(res => {
         this.post = res.data.data[0];
       });
     },
- 
+
     // 点赞
     giveFive() {
       this.$axios({
@@ -88,6 +85,7 @@ export default {
       }).then(res => {
         if (res.request.status === 200) {
           this.$message.success("点赞成功");
+          this.$store.commit("post/newlike", 1);
         }
       });
     },
@@ -117,6 +115,11 @@ export default {
   watch: {
     $route() {
       this.init();
+    },
+    "$store.state.post.newlike"(n, o) {
+      console.log(456445645465, n);
+      this.init();
+      this.$store.commit("post/newlike", 0);
     }
   }
 };
@@ -176,6 +179,5 @@ export default {
       }
     }
   }
-
 }
 </style>
