@@ -13,7 +13,7 @@
         <!-- 文章列表 -->
         <list />
         <!-- 分页 -->
-        <index_fenyey/>
+        
       </el-col>
     </el-row>
   </div>
@@ -23,13 +23,12 @@
 import search from "@/components/post/search";
 import list from "@/components/post/list";
 import recomcity from "@/components/post/recomcity";
-import index_fenyey from "@/components/post/index_fenye";
 export default {
   components: {
     search,
     list,
     recomcity,
-    index_fenyey
+    
   }
 };
 </script>
