@@ -33,7 +33,7 @@ export default {
       url: "/posts/recommend",
       params: { id }
     }).then(res => {
-      // console.log(123, res);
+      console.log(123, res);
       if (res.request.status === 200) {
         this.list = res.data.data;
       }

@@ -67,10 +67,11 @@ export default {
   methods: {
    
     init() {
+       this.id = this.$route.query.id
       // 获取文章详情
       this.$axios({
         url: "/posts",
-        params: { id: this.id}
+        params: { id:this.id}
       }).then(res => {
         this.post = res.data.data[0];
       });

@@ -107,20 +107,15 @@ export default {
     };
   },
   mounted() {
-    // 页面刷新把显示@隐藏
-    this.$store.commit("post/newcomment", "");
-    this.nickName = "";
-    this.comment.post = this.$route.query.id;
     setTimeout(() => {
-      this.getcomments.post = this.$route.query.id;
-
       this.init();
-      this.nickName = "";
-      this.comment.follow = "";
     }, 10);
-    // console.log(1234, this.$store.state.post.newComment);
   },
-
+  watch: {
+    $route() {
+      this.init();
+    }
+  },
   methods: {
     // 提交评论
     subComment() {
@@ -169,6 +164,12 @@ export default {
       this.init();
     },
     init() {
+      this.getcomments.post = this.$route.query.id;
+      // 页面刷新把显示@隐藏
+      this.$store.commit("post/newcomment", "");
+
+      this.nickName = "";
+      this.comment.follow = "";
       // 获取评论
 
       this.$axios({
@@ -192,6 +193,7 @@ export default {
       this.nickName = "";
       this.comment.follow = "";
     }
+
   },
   filters: {
     time
