@@ -18,6 +18,7 @@
           :on-preview="handlePictureCardPreview"
           :on-remove="handleRemove"
           :on-success="successUpload"
+          ref="upload"
           :headers="{Accept:'application/json, text/plain, */*'}"
           name="files"
         >
@@ -119,39 +120,44 @@ export default {
   methods: {
     // 提交评论
     subComment() {
-      console.log("发送的数据", this.comment);
-      if (this.comment.content === "") {
+      this.comment.post = this.$route.query.id;
+
+      if (this.comment.content !== "" || this.comment.pics.lenght!=='') {
+        this.$axios({
+          url: "/comments",
+          method: "POST",
+          headers: {
+            Authorization: `Bearer ${this.$store.state.user.userInfo.token}`,
+            "Content-Type": "application/json"
+          },
+          data: this.comment
+        }).then(res => {
+          if (res.request.status === 200) {
+            this.$message.success("发表评论成功");
+            this.handleRemove();
+            this.$refs.upload.clearFiles();
+            this.dialogImageUrl = "";
+            this.comment.pics = [];
+            this.init();
+            this.comment.content = "";
+            this.nickName = "";
+            this.comment.follow = "";
+          }
+        });
+      } else {
         this.$message.info("内容不能为空");
-        return;
       }
-      this.$axios({
-        url: "/comments",
-        method: "POST",
-        headers: {
-          Authorization: `Bearer ${this.$store.state.user.userInfo.token}`,
-          "Content-Type": "application/json"
-        },
-        data: this.comment
-      }).then(res => {
-        if (res.request.status === 200) {
-          this.$message.success("发表评论成功");
-          this.comment.content = "";
-          this.init();
-          this.nickName = "";
-          this.comment.follow = "";
-        }
-      });
     },
     // 图片上传事件
     handleRemove(file, fileList) {
       console.log(file, fileList);
+      file = "";
     },
     handlePictureCardPreview(file) {
       this.dialogImageUrl = file.url;
       this.dialogVisible = true;
     },
     successUpload(file, fileList) {
-      console.log("上传前", file, fileList);
       this.comment.pics.push(file[0]);
     },
     // 分页
@@ -193,7 +199,6 @@ export default {
       this.nickName = "";
       this.comment.follow = "";
     }
-
   },
   filters: {
     time
