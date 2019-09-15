@@ -23,9 +23,10 @@
       </el-form>
       <!-- 发布按钮 -->
       <div class="fabu">
-        <el-button size="small" type="primary" @click="handelClick">发布</el-button>
-        <span>或者</span>
-        <span class="caogao" @click="handelCucun">保存到草稿箱</span>
+        <el-button size="small" type="primary" plain @click="handelClick">发布</el-button>
+        <!-- <span>或者</span>
+        <span class="caogao" @click="handelCucun">保存到草稿箱</span>-->
+        <el-button size="small" type="warning" plain @click="handelCucun">保存到草稿箱</el-button>
       </div>
     </div>
     <div class="caogaoxiang">
@@ -134,15 +135,34 @@ export default {
   },
   methods: {
     // 点击草稿箱渲染出来数据
-    handelXunRan(index){
-      console.log(index)
-      this.form.title=this.locList[index].title
-      this.form.city=this.locList[index].city
-      this.$refs.vueEditor.editor.root.innerHTML=this.locList[index].content
-      console.log(this.$refs.vueEditor.editor.root.innerHTML)
+    handelXunRan(index) {
+      console.log(index);
+      this.form.title = this.locList[index].title;
+      this.form.city = this.locList[index].city;
+      this.$refs.vueEditor.editor.root.innerHTML = this.locList[index].content;
+      console.log(this.$refs.vueEditor.editor.root.innerHTML);
     },
     // 点击存储到草稿箱
     handelCucun() {
+      // 标题
+      if (!this.form.title) {
+        this.$message.error("标题不能为空");
+        return;
+      }
+
+      // 内容不能为空
+      // this.form.content = this.$refs.vueEditor.editor.root.innerHTML;
+      if (this.$refs.vueEditor.editor.root.innerHTML == "<p><br></p>") {
+        this.$message.error("内容不能为空");
+        return;
+      }
+
+      // 标题
+      if (!this.form.city) {
+        this.$message.error("游玩城市不能为空");
+        return;
+      }
+
       //   输入标题框
       let title = this.form.title;
       //   选择城市
@@ -159,9 +179,16 @@ export default {
 
       // 把本地存储先拿出来
       const create = JSON.parse(localStorage.getItem("post")) || [];
-      create.push(this.form);
+      create.unshift(this.form);
 
       this.locList = create;
+
+      // 当存储的数据大于5就覆盖掉最后一个
+      if (this.locList.length > 5) {
+        this.locList.splice(4,1)
+      }
+
+
       // 把搜索的条件保存到本地
       localStorage.setItem("post", JSON.stringify(create));
       // 再取一次数据
@@ -169,6 +196,7 @@ export default {
 
       this.locList = newCreate;
 
+      console.log(this.locList)
       //   清空富文本框
       this.$refs.vueEditor.editor.root.innerHTML = "";
       this.form = {
@@ -195,7 +223,7 @@ export default {
         url: "/airs/city",
         params: { name: this.form.city }
       }).then(res => {
-        console.log(res)
+        console.log(res);
         // 解构data
         const { data } = res.data;
         // 创建一个新数组
@@ -222,6 +250,25 @@ export default {
     },
     // 发布
     handelClick() {
+      // 标题
+      if (!this.form.title) {
+        this.$message.error("标题不能为空");
+        return;
+      }
+
+      // 内容不能为空
+      // this.form.content = this.$refs.vueEditor.editor.root.innerHTML;
+      if (this.$refs.vueEditor.editor.root.innerHTML == "<p><br></p>") {
+        this.$message.error("内容不能为空");
+        return;
+      }
+
+      // 标题
+      if (!this.form.city) {
+        this.$message.error("游玩城市不能为空");
+        return;
+      }
+
       this.$axios({
         url: "/posts",
         method: "POST",
@@ -237,6 +284,8 @@ export default {
         console.log(res);
         if (res.status === 200) {
           this.$message.success(res.data.message);
+          // 跳转
+          this.$router.push({ path: "/post" });
           //   清空富文本框
           this.$refs.vueEditor.editor.root.innerHTML = "";
           this.form = {
@@ -262,7 +311,7 @@ export default {
   margin: 0 auto;
   padding-top: 20px;
   position: relative;
-  background: #e8d5b5;
+  // background: #e8d5b5;
   .contont {
     width: 750px;
     height: 705px;
@@ -287,9 +336,10 @@ export default {
       height: 400px;
     }
     .ql-editor {
-      // background:url(https://ss0.bdstatic.com/70cFvHSh_Q1YnxGkpoWK1HF6hhy/it/u=3818384369,377098219&fm=26&gp=0.jpg) no-repeat;
-      // background-size:100%;
-      // background: #e8d5b5;
+      background: url(http://img0.imgtn.bdimg.com/it/u=2362088077,4052528931&fm=26&gp=0.jpg)no-repeat;
+      background-size: 100%;
+      color: skyblue;
+
     }
     .youwan {
       margin-top: 70px;
@@ -330,12 +380,12 @@ export default {
         }
       }
       span {
-        color:#111;
+        color: #111;
         font-weight: 500;
       }
       p {
         font-size: 14px;
-        color:#999;
+        color: #999;
       }
     }
 
