@@ -343,6 +343,7 @@ export default {
         no-repeat;
       background-size: 100%;
       color: skyblue;
+
     }
     .youwan {
       margin-top: 70px;

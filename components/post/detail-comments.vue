@@ -8,8 +8,9 @@
           回复 @{{nickName}}
           <i @click="cancel">x</i>
         </span>
+       
       </div>
-      <el-input v-model="comment.content" placeholder="请输入内容" @keydown.native.enter="subComment"></el-input>
+      <el-input v-model="comment.content" placeholder="请输入内容" @keydown.native.enter="subComment" ref="focus"></el-input>
       <el-row type="flex" justify="space-between" class="upload">
         <!-- 上传图片 -->
         <el-upload
@@ -112,17 +113,13 @@ export default {
       this.init();
     }, 10);
   },
-  watch: {
-    $route() {
-      this.init();
-    }
-  },
+
   methods: {
     // 提交评论
     subComment() {
       this.comment.post = this.$route.query.id;
 
-      if (this.comment.content !== "" || this.comment.pics.lenght!=='') {
+      if (this.comment.content !== "" || this.comment.pics.lenght !== "") {
         this.$axios({
           url: "/comments",
           method: "POST",
@@ -208,8 +205,13 @@ export default {
       this.nickName = n.account.nickname;
       this.comment.follow = n.id;
     },
-    "$store.state.post.recallInfo"(n, o) {
-      // console.log(456445645465, n);
+
+    $route() {
+      this.init();
+    },
+    "$store.state.post.newlike"(n, o) {
+      this.$refs.focus.focus()
+      this.$store.commit("post/newlike", 0);
     }
   }
 };
