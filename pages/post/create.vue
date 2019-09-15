@@ -402,7 +402,7 @@ export default {
   }
   .caogaoxiang {
     width: 150px;
-    padding: 10px 20px 0px 10px;
+    padding: 10px 20px 10px 10px;
     color: #666;
     position: absolute;
     top: 20px;
