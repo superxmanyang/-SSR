@@ -8,8 +8,9 @@
           回复 @{{nickName}}
           <i @click="cancel">x</i>
         </span>
+       
       </div>
-      <el-input v-model="comment.content" placeholder="请输入内容" @keydown.native.enter="subComment"></el-input>
+      <el-input v-model="comment.content" placeholder="请输入内容" @keydown.native.enter="subComment" ref="focus"></el-input>
       <el-row type="flex" justify="space-between" class="upload">
         <!-- 上传图片 -->
         <el-upload
@@ -204,9 +205,13 @@ export default {
       this.nickName = n.account.nickname;
       this.comment.follow = n.id;
     },
-   
+
     $route() {
       this.init();
+    },
+    "$store.state.post.newlike"(n, o) {
+      this.$refs.focus.focus()
+      this.$store.commit("post/newlike", 0);
     }
   }
 };

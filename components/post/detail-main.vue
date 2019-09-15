@@ -15,7 +15,7 @@
     <div class="content" v-html="post.content"></div>
     <!-- 点赞 -->
     <el-row type="flex" class="like" justify="center">
-      <div class="like-item">
+      <div class="like-item" @click="sayit">
         <i class="el-icon-edit-outline"></i>
         <p>评论({{post.comments.length}})</p>
       </div>
@@ -32,6 +32,7 @@
         <p>点赞({{post.like|like}})</p>
       </div>
     </el-row>
+   
   </div>
 </template>
 
@@ -48,8 +49,19 @@ export default {
       commentsList: [],
 
       token: "",
-      id: ""
+      id: "",
+      ttt: "",
+      is: false
     };
+  },
+  directives: {
+    focus: {
+      inserted: function(el, { value }) {
+        if (value) {
+          el.focus();
+        }
+      }
+    }
   },
   filters: {
     // 转换时间
@@ -73,7 +85,12 @@ export default {
         this.post = res.data.data[0];
       });
     },
-
+  // 评论   
+  sayit(){
+      this.$store.commit("post/newlike", 1);
+     
+  },
+  
     // 点赞
     giveFive() {
       this.$axios({
@@ -116,11 +133,7 @@ export default {
     $route() {
       this.init();
     },
-    "$store.state.post.newlike"(n, o) {
-      console.log(456445645465, n);
-      this.init();
-      this.$store.commit("post/newlike", 0);
-    }
+   
   }
 };
 </script>
