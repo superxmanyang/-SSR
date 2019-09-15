@@ -286,7 +286,7 @@ export default {
       margin-top: 20px;
       height: 400px;
     }
-    .ql-editor{
+    .ql-editor {
       // background:url(https://ss0.bdstatic.com/70cFvHSh_Q1YnxGkpoWK1HF6hhy/it/u=3818384369,377098219&fm=26&gp=0.jpg) no-repeat;
       // background-size:100%;
       // background: #e8d5b5;

@@ -7,11 +7,13 @@
             <li
               v-for="(item, index) in ['热门城市', '推荐城市', '奔向海岛','主题推荐']"
               :key="index"
-              @mouseenter="handleClick(index)"
+              
               :class="{ active: current === index }"
             >{{ item }}></li>
+             <!-- @mouseenter="enter(index)" -->
+              <!-- @mouseleave="leave()" -->
             <div class="yincang">
-              <div v-show="current === 0" class="box">
+              <div v-show="current === 0">
                 <ul>
                   <li @click="hreftwo">
                     <strong>1</strong> 北京 世界著名古都和现代化国际城市
@@ -87,7 +89,7 @@ export default {
   data() {
     return {
       // // 记录当前的状态
-      // current: 5
+      // current: 0
     }
   },
    // 组件
@@ -97,24 +99,19 @@ export default {
   },
 
   mounted() {
-    // // 请求文章列表数据
-    // this.getData();
+   
   },
   methods: {
     // tab栏
-    handleClick(index) {
-      // 修改current
-      this.seen = true;
-      this.current = index;
-    },
-    leave() {
-      this.seen = this.seen;
-      this.current = null;
-    },
-     // 获取文章列表数据
-      getData(){
-      console.log(this.$route)
-      }
+    // enter(index) {
+    //   // 修改current
+    //    this.seen = true;
+    //   this.current = index;
+    // },
+    // leave() {
+    // this.seen = false;
+    // this.current = null;
+    // }
   }
 }
 </script>

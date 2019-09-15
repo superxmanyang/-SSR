@@ -9,9 +9,10 @@
       ></el-input>
     </div>
     <p>推荐： <a href="">广州 </a> <a href="">上海</a> <a href="">北京</a></p>
-     <el-tabs type="card" >
-    <el-tab-pane label="推荐攻略" name="first" style="cursor: not-allowed"></el-tab-pane>
-  </el-tabs>
+    <div class="jian">
+      <span>推荐攻略</span>
+      <el-button type="primary" icon="el-icon-edit" class="you">写游记</el-button>
+    </div>
   </div>
 </template>
 
@@ -30,6 +31,16 @@ export default {
     p {
       font-size: 12px;
       padding: 10px 0 20px 0;
+    }
+    .jian {
+      display: flex;
+      justify-content:space-between;
+      border-bottom: 1px solid #ddd;
+       padding-bottom: 10px;
+      span {
+        font-size: 18px;
+        color: #ffa500;
+      }
     }
   }
 </style>
