@@ -1,59 +1,42 @@
 <template>
-  <div style="padding:50px;">
-    <h2>组件递归</h2>
-
-    <Item :data="list"/>
-
+  <div class="index">
+    <el-row type="flex" :gutter="40" >
+      <!-- 左侧 -->
+      <el-col :span="7">
+        <!-- 推荐城市列表 -->
+        <recomcity />
+      </el-col>
+      <!-- 右侧 -->
+      <el-col :span="17">
+        <!-- 搜索栏 -->
+        <search></search>
+        <!-- 文章列表 -->
+        <list />
+        <!-- 分页 -->
+        
+      </el-col>
+    </el-row>
   </div>
 </template>
 
 <script>
-import Item from "@/components/post/item";
+import search from "@/components/post/search";
+import list from "@/components/post/list";
+import recomcity from "@/components/post/recomcity";
 export default {
-  data(){
-    return {
-      list: [
-        {
-          title: "衣服",
-          children: [
-            {
-              title: "男装",
-              children: [
-                {title: "秋裤"},
-                {title: "西装", children: [
-                  {title: "领带"},
-                  {title: "皮带"},
-                ]}
-              ]
-            },
-            {
-              title: "女装",
-              children: [
-                {title: "裙子"},
-                {title: "比基尼"}
-              ]
-            }
-          ]
-        },
-
-        {
-          title: "电器",
-          children: [
-            {title: "冰箱"},
-            {title: "空调"},
-            {title: "游戏机"}
-          ]
-        }
-      ]
-    }
-  },
-
   components: {
-    Item
+    search,
+    list,
+    recomcity,
+    
   }
-}
+};
 </script>
 
-<style>
+<style lang="less" scoped>
+.index {
+  width: 1000px;
+  margin: 0 auto;
+  padding: 20px 0;
 
-</style>
+}
