@@ -67,8 +67,8 @@
       @size-change="handleSizeChange"
       @current-change="handleCurrentChange"
       :current-page="getcomments._start-1"
-      :page-sizes="[1, 2, 15, 20]"
-      :page-size="1"
+      :page-sizes="[5, 10, 15, 20]"
+      :page-size="5"
       layout="total, sizes, prev, pager, next, jumper"
       :total="total"
       style="margin:20px 0;"
@@ -90,7 +90,7 @@ export default {
       // 获取评论列表参数
       getcomments: {
         post: "",
-        _limit: 1,
+        _limit: 5,
         _start: 0
       },
       // 上传图片显示

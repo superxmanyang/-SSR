@@ -88,7 +88,6 @@ export default {
   // 评论   
   sayit(){
       this.$store.commit("post/newlike", 1);
-     
   },
   
     // 点赞
