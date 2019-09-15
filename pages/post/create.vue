@@ -336,11 +336,7 @@ export default {
       height: 400px;
     }
     .ql-editor {
-      background: url(
-          http://img0.imgtn.bdimg.com/it/u=2362088077,
-          4052528931&fm=26&gp=0.jpg
-        )
-        no-repeat;
+      background: url(http://img0.imgtn.bdimg.com/it/u=2362088077,4052528931&fm=26&gp=0.jpg)no-repeat;
       background-size: 100%;
       color: skyblue;
 
