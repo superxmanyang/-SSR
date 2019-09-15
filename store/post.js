@@ -3,7 +3,9 @@ export const state = () => {
     return {
         // 更新评论
         newComment:'',
-        recallInfo:{}
+        recallInfo:{},
+        // 刷新点赞
+        newlike:0
     }
 }
 
@@ -16,5 +18,8 @@ export const mutations = {
     // 接收子组件要@的那个人
     setrecallInfo(state,data){
         state.recallInfo=data
+    },
+    newlike(state,data){
+        state.newlike=data
     }
 };

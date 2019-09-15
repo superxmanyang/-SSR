@@ -8,8 +8,9 @@
           回复 @{{nickName}}
           <i @click="cancel">x</i>
         </span>
+       
       </div>
-      <el-input v-model="comment.content" placeholder="请输入内容" @keydown.native.enter="subComment"></el-input>
+      <el-input v-model="comment.content" placeholder="请输入内容" @keydown.native.enter="subComment" ref="focus"></el-input>
       <el-row type="flex" justify="space-between" class="upload">
         <!-- 上传图片 -->
         <el-upload
@@ -18,6 +19,7 @@
           :on-preview="handlePictureCardPreview"
           :on-remove="handleRemove"
           :on-success="successUpload"
+          ref="upload"
           :headers="{Accept:'application/json, text/plain, */*'}"
           name="files"
         >
@@ -107,56 +109,52 @@ export default {
     };
   },
   mounted() {
-    // 页面刷新把显示@隐藏
-    this.$store.commit("post/newcomment", "");
-    this.nickName = "";
-    this.comment.post = this.$route.query.id;
     setTimeout(() => {
-      this.getcomments.post = this.$route.query.id;
-
       this.init();
-      this.nickName = "";
-      this.comment.follow = "";
     }, 10);
-    // console.log(1234, this.$store.state.post.newComment);
   },
 
   methods: {
     // 提交评论
     subComment() {
-      console.log("发送的数据", this.comment);
-      if (this.comment.content === "") {
+      this.comment.post = this.$route.query.id;
+
+      if (this.comment.content !== "" || this.comment.pics.lenght !== "") {
+        this.$axios({
+          url: "/comments",
+          method: "POST",
+          headers: {
+            Authorization: `Bearer ${this.$store.state.user.userInfo.token}`,
+            "Content-Type": "application/json"
+          },
+          data: this.comment
+        }).then(res => {
+          if (res.request.status === 200) {
+            this.$message.success("发表评论成功");
+            this.handleRemove();
+            this.$refs.upload.clearFiles();
+            this.dialogImageUrl = "";
+            this.comment.pics = [];
+            this.init();
+            this.comment.content = "";
+            this.nickName = "";
+            this.comment.follow = "";
+          }
+        });
+      } else {
         this.$message.info("内容不能为空");
-        return;
       }
-      this.$axios({
-        url: "/comments",
-        method: "POST",
-        headers: {
-          Authorization: `Bearer ${this.$store.state.user.userInfo.token}`,
-          "Content-Type": "application/json"
-        },
-        data: this.comment
-      }).then(res => {
-        if (res.request.status === 200) {
-          this.$message.success("发表评论成功");
-          this.comment.content = "";
-          this.init();
-          this.nickName = "";
-          this.comment.follow = "";
-        }
-      });
     },
     // 图片上传事件
     handleRemove(file, fileList) {
       console.log(file, fileList);
+      file = "";
     },
     handlePictureCardPreview(file) {
       this.dialogImageUrl = file.url;
       this.dialogVisible = true;
     },
     successUpload(file, fileList) {
-      console.log("上传前", file, fileList);
       this.comment.pics.push(file[0]);
     },
     // 分页
@@ -169,6 +167,12 @@ export default {
       this.init();
     },
     init() {
+      this.getcomments.post = this.$route.query.id;
+      // 页面刷新把显示@隐藏
+      this.$store.commit("post/newcomment", "");
+
+      this.nickName = "";
+      this.comment.follow = "";
       // 获取评论
 
       this.$axios({
@@ -201,8 +205,13 @@ export default {
       this.nickName = n.account.nickname;
       this.comment.follow = n.id;
     },
-    "$store.state.post.recallInfo"(n, o) {
-      // console.log(456445645465, n);
+
+    $route() {
+      this.init();
+    },
+    "$store.state.post.newlike"(n, o) {
+      this.$refs.focus.focus()
+      this.$store.commit("post/newlike", 0);
     }
   }
 };
