@@ -193,7 +193,7 @@ export default {
 
       // 当存储的数据大于5就覆盖掉最后一个
       if (this.locList.length > 5) {
-        this.locList.splice(4, 1);
+        this.locList.splice(5, 1);
       }
 
       // 把搜索的条件保存到本地
