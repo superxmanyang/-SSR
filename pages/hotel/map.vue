@@ -1,6 +1,6 @@
 <template>
-  <div style="padding: 50px">
-      高德地图
+  <div style="padding: 0">
+     
       <div id="container"></div> 
   </div>
 </template>
@@ -45,5 +45,5 @@ export default {
 </script>
 
 <style scoped >
-    #container {width:420px; height: 260px; }  
+    #container {width:400px; height: 260px; }  
 </style>
