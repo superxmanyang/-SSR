@@ -280,21 +280,36 @@ export default {
       // 创建地图， container是容器的id
       var map = new AMap.Map("mapContainer", {
         zoom: 11, //级别
-        center: [118.8718107, 31.32846821] //中心点坐标
+        center: [114.085947, 22.547] //中心点坐标
       });
     };
 
+    /* 下面这段代码作用未知 */
     var url =
       "https://webapi.amap.com/maps?v=1.4.15&key=a1641a0d1149997507fec7f625f5a2b4&callback=onLoad";
     var jsapi = document.createElement("script");
     jsapi.charset = "utf-8";
     jsapi.src = url;
     document.head.appendChild(jsapi);
+
+    /* 创建marker */
+    for (let i = 0; i < this.myposition.length; i++) {
+      // 创建一个 Marker 实例：
+      new AMap.Marker({
+        position: new AMap.LngLat(
+          this.myposition[i].longitude,
+          this.myposition[i].latitude
+        ), // 经纬度对象，也可以是经纬度构成的一维数组[116.39, 39.9]
+        title: this.myposition.name
+      });
+      // 将创建的点标记添加到已有的地图实例：
+      map.add(marker);
+    }
   },
   methods: {
     /* 绘制marker */
     /* 传入三个参数，经纬和title */
-    createMarker(longitude, latitude, title) {
+    /* createMarker(longitude, latitude, title) {
       // 创建一个 Marker 实例：
       var marker = new AMap.Marker({
         position: new AMap.LngLat(longitude, latitude), // 经纬度对象，也可以是经纬度构成的一维数组[116.39, 39.9]
@@ -302,12 +317,12 @@ export default {
       });
       // 将创建的点标记添加到已有的地图实例：
       map.add(marker);
-    },
+    }, */
     /* 从服务器获取数据 */
     async init() {
       let finalArr = {
         // 酒店id
-        id: 5
+        id: this.$route.query.id
         // city: 199,
         // enterTime: "2019-06-12",
         // leftTime: "2019-07-15",
