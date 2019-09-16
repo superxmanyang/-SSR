@@ -13,7 +13,7 @@
         <!-- 文章列表 -->
         <list />
         <!-- 分页 -->
-        
+        <paging />
       </el-col>
     </el-row>
   </div>
@@ -23,11 +23,13 @@
 import search from "@/components/post/search";
 import list from "@/components/post/list";
 import recomcity from "@/components/post/recomcity";
+
 export default {
   components: {
     search,
     list,
     recomcity,
+    
     
   }
 };

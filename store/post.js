@@ -6,7 +6,8 @@ export const state = () => {
         recallInfo:{},
         // 刷新点赞
         newlike:0,
-        data:[]
+        data:[],
+        searchInfo:[]
     }
 }
 
@@ -25,6 +26,9 @@ export const mutations = {
     },
     newdata(state,data){
         state.data=data
+    },
+    getSearachInfo(state,data){
+        state.searchInfo=data
     }
 };
 // 搜索接收返回数据

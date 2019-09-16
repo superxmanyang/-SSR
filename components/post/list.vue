@@ -9,7 +9,7 @@
     <div class="composition">
       <div
         class="inlist"
-        v-for="(item,index) in compositions"
+        v-for="(item,index) in  DataList"
         :key="index"
         :class="{less:item.images.length<3}"
         :data="item"
@@ -48,6 +48,18 @@
         </el-row>
       </div>
     </div>
+    <!-- 分页 -->
+    <div class="block">
+      <el-pagination
+        @size-change="handleSizeChange"
+        @current-change="handleCurrentChange"
+        :current-page="pageIndex"
+        :page-sizes="[3, 6, 9, 12]"
+        :page-size="pageSize"
+        layout="total, sizes, prev, pager, next, jumper"
+        :total="total"
+      ></el-pagination>
+    </div>
   </div>
 </template>
 
@@ -56,29 +68,83 @@ export default {
   data() {
     return {
       cityName: "",
-      compositions: []
+      // compositions: [],
+      // 当前显示列表数组
+      DataList: [],
+      data: [],
+
+      pageIndex: 1, // 当前的页码
+      pageSize: 3, // 当前的条数
+      total: 0 // 总条数
     };
   },
   mounted() {
-    // 获取文章列表
-    this.$axios({
-      url: "/posts"
-      // params:{city:this.cityName}
-    }).then(res => {
-      console.log(res);
-      this.compositions = res.data.data;
-      console.log(this.composition);
-    });
+     this.$store.commit("post/newdata", '');
+    this.init();
   },
-  methods: {},
-  watch:{
-  '$store.state.post.data'(n,o){
-    console.log(123,n)
-    this.compositions=n
-  }
-}
-};
+  methods: {
+    init() {
+      // 获取文章列表
+      console.log(this.cityName)
+      if (this.cityName === "") {
+        console.log('空')
+        this.$axios({
+          url: "/posts"
+        }).then(res => {
+          // console.log(res);
+          // this.compositions = res.data.data;
+          this.total = res.data.total;
+          console.log(
+            (this.pageIndex - 1) * this.pageSize,
+            this.pageSize * this.pageIndex
+          );
+          this.DataList = res.data.data.slice(
+            (this.pageIndex - 1) * this.pageSize,
+            this.pageSize * this.pageIndex
+          );
+          console.log(1234567, this.DataList);
+        });
+      } else {
+        console.log('非空')
 
+        this.$axios({
+          url: "/posts",
+          params: { city: this.cityName }
+        }).then(res => {
+          // console.log(res);
+          // this.compositions = res.data.data;
+          this.total = res.data.total;
+          console.log(
+            (this.pageIndex - 1) * this.pageSize,
+            this.pageSize * this.pageIndex
+          );
+          this.DataList = res.data.data.slice(
+            (this.pageIndex - 1) * this.pageSize,
+            this.pageSize * this.pageIndex
+          );
+          console.log(1234567, this.DataList);
+        });
+      }
+    },
+    // 每页条数切换时候触发,
+    handleSizeChange() {},
+    // 页码切换时候触发,
+    handleCurrentChange(val) {
+      this.pageIndex = val;
+
+      this.init();
+    }
+  },
+  watch: {
+    "$store.state.post.data"(n, o) {
+      console.log(23456)
+      this.cityName = n;
+      this.init()
+      console.log(this.cityname)
+    
+    }
+  }
+};
 </script>
 <style lang="less" scoped>
 .list {
