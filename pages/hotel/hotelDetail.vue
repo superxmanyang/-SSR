@@ -92,8 +92,14 @@
       <div id="mapContainer"></div>
 
       <!-- 高德地图旁边tabs栏 -->
-      <el-tabs v-model="activeName" @tab-click="handleClick">
-        <el-tab-pane label="风景" name="first"></el-tab-pane>
+      <el-tabs v-model="activeName" @tab-click="handleClick" class="tabs_list">
+        <el-tab-pane label="风景" name="first">
+          <ul>
+            <li v-for="(item, index) in position" :key="index">
+              <span>{{item.name}}</span>
+            </li>
+          </ul>
+        </el-tab-pane>
         <el-tab-pane label="交通" name="second">交通</el-tab-pane>
       </el-tabs>
     </div>
@@ -170,12 +176,16 @@
 export default {
   data() {
     return {
+      /* 存储自己所需的参数 */
+      myposition: [],
+      /* 存储了查找风景名胜返回来的地图数据 */
+      position: {},
       /* 酒店数据存储 */
       hotelData: {},
       /* 酒店评分数据 */
       value: 3.5,
       /* 地图旁tabs数据 */
-      activeName: "second",
+      activeName: "first",
       /* 酒店房间价格列表 */
       tableData: [
         /* {
@@ -197,6 +207,58 @@ export default {
     };
   },
   mounted() {
+    // 循环绘制marker
+    /* for (let i = 0; i < this.myposition.length; i++) {
+      createMarker(
+        myposition[i].longitude,
+        myposition[i].latitude,
+        myposition[i].name
+      );
+    } */
+
+    //高德地图请求
+    this.$axios({
+      url: "https://restapi.amap.com/v3/place/text",
+      method: "get",
+      params: {
+        // 需要使用web服务类型的key
+        key: "554e73e6213d866abc85a17f81afaec7",
+        // keywords和tyoes两者必选其一
+        // keywords:,
+        types: "风景名胜",
+        city: "深圳",
+        // 每页的记录数据
+        offset: 10,
+        // 当前页数
+        page: 1,
+        // 返回的数据类型，默认json
+        output: JSON,
+        // 官方文档并没有提到location，但是从老师的线上项目来看，是有location这个参数的
+        location: "22.522882,114.054512"
+      }
+    }).then(res => {
+      // 在network中看到的是res.data下的
+      this.position = res.data.pois;
+      console.log("++++++++++++++++");
+      console.log(this.position);
+      console.log("++++++++++++++++");
+
+      // 把数据处理到一个对象数组position中
+      // 处理经纬度
+
+      for (let i = 0; i < this.position.length; i++) {
+        let arr = this.position[i].location.split(",");
+        let obj = {
+          longitude: arr[0],
+          latitude: arr[1],
+          id: this.position[i].id,
+          name: this.position[i].name
+        };
+        this.myposition.push(obj);
+      }
+      console.log(this.myposition);
+    });
+    // 初始化加载酒店详情页
     this.init();
     // this.$axios({
     //   url: "/hotels",
@@ -230,27 +292,40 @@ export default {
     document.head.appendChild(jsapi);
   },
   methods: {
+    /* 绘制marker */
+    /* 传入三个参数，经纬和title */
+    createMarker(longitude, latitude, title) {
+      // 创建一个 Marker 实例：
+      var marker = new AMap.Marker({
+        position: new AMap.LngLat(longitude, latitude), // 经纬度对象，也可以是经纬度构成的一维数组[116.39, 39.9]
+        title: title
+      });
+      // 将创建的点标记添加到已有的地图实例：
+      map.add(marker);
+    },
     /* 从服务器获取数据 */
     async init() {
       let finalArr = {
-        city: 199,
-        enterTime: "2019-06-12",
-        leftTime: "2019-07-15",
-        _limit: 10,
-        _start: 0
+        // 酒店id
+        id: 5
+        // city: 199,
+        // enterTime: "2019-06-12",
+        // leftTime: "2019-07-15",
+        // _limit: 10,
+        // _start: 0
       };
       let result = await this.$axios({
         url: "/hotels",
         method: "get",
         params: finalArr
       });
-      console.log(result);
       this.hotelData = result.data.data[0];
+      console.log("--------------");
       console.log(this.hotelData);
+      console.log("--------------");
       //为毛报错hotelData未定义？因为傻子没有加this.
 
-      // 把酒店的数据分发给不同的代码段
-      // 酒店房间价格
+      // 酒店价格列表
       this.tableData = this.hotelData.products;
     },
     /* 地图旁tabs点击处理函数 */
@@ -303,9 +378,19 @@ export default {
   margin: 40px 0;
   display: flex;
   justify-content: space-around;
+  height: 360px;
   #mapContainer {
-    width: 650px;
-    height: 360px;
+    width: 65%;
+    height: 100%;
+  }
+  .tabs_list {
+    flex: 1;
+    padding-left: 20px;
+    overflow: hidden;
+    li {
+      margin: 0 20px 20px 10px;
+      cursor: pointer;
+    }
   }
 }
 
