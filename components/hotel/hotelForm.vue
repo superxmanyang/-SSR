@@ -18,7 +18,11 @@
         ></el-date-picker>
       </el-form-item>
 
+<<<<<<< HEAD
+      <!-- 自定义选择器  -->
+=======
      <!-- 自定义选择器  -->
+>>>>>>> 0a53c01cdb0c73247d82a2a4c5c30dc2f1a9764d
       <el-form-item>
         <el-select v-model="value" placeholder="人数未定">
           <el-option-group v-for="group in options" :key="group.label" :label="group.label">
@@ -39,7 +43,11 @@
     </el-form>
 
     <!-- 地图蓝 -->
+<<<<<<< HEAD
+    <!-- 地址区域 -->
+=======
      <!-- 地址区域 -->
+>>>>>>> 0a53c01cdb0c73247d82a2a4c5c30dc2f1a9764d
     <el-row type="flex" :gutter="20" class="addressarea">
       <!-- 地图栏 -->
       <el-col class="left" :span="14">
@@ -59,7 +67,11 @@
         <el-row type="flex">
           <el-col :span="3">均价 :</el-col>
           <el-col :span="21" class="adress">
+<<<<<<< HEAD
+            <el-row type="flex">
+=======
             <el-row type="flex" >
+>>>>>>> 0a53c01cdb0c73247d82a2a4c5c30dc2f1a9764d
               <div class="huangguan">
                 <i class="iconfont iconhuangguan"></i>
                 <i class="iconfont iconhuangguan"></i>
@@ -86,7 +98,11 @@
         </el-row>
       </el-col>
 
+<<<<<<< HEAD
+      <!-- 地图 -->
+=======
        <!-- 地图 -->
+>>>>>>> 0a53c01cdb0c73247d82a2a4c5c30dc2f1a9764d
       <el-col class="right" :span="10">
         <Map />
       </el-col>
@@ -227,25 +243,30 @@
       :key="index"
     >
       <!-- 图片 -->
-      <el-col :span="8">
-        <el-aside style="width:320px">
-          <span>
-            <img style="width:320px;height:210px;" :src="item.photos" />
-          </span>
-        </el-aside>
-      </el-col>
+      <nuxt-link :to="`/hotel/hotelDetail?id=${item.id}`">
+        <el-col :span="8">
+          <el-aside style="width:320px">
+            <span>
+              <img style="width:320px;height:210px;" :src="item.photos" />
+            </span>
+          </el-aside>
+        </el-col>
+      </nuxt-link>
       <!-- 文体 -->
+     
       <el-col :span="11" style="margin-right:20px">
         <el-main class="el-main-h2">
+           <nuxt-link :to="`/hotel/hotelDetail?id=${item.id}`">
           <h2>{{item.name}}</h2>
+           </nuxt-link>
           <div class="el-main-color">
             <span>{{item.alias}}</span>
-            <div v-if="item.hotellevel">
-            <span v-for="(item3, index3) in item.hotellevel"
-            :key="index3">
-            <i class="iconfont iconhuangguan" style="color:rgb(247,186,42);"></i>
-            </span></div>
-            <span>77777</span>
+            <span v-if="item.hotellevel">
+              <span v-for="(item3, index3) in item.hotellevel" :key="index3">
+                <i class="iconfont iconhuangguan" style="color:rgb(247,186,42);"></i>
+              </span>
+            </span>
+            <span>经济型</span>
           </div>
         </el-main>
         <el-row style="margin: 0 20px;">
@@ -325,13 +346,24 @@
         </el-row>
       </el-col>
     </el-row>
-    <el-row type="flex" class="row-bg" justify="end">
+
+    <el-pagination
+      @size-change="handleSizeChange"
+      @current-change="handleCurrentChange"
+      :current-page="pageNum"
+      :page-sizes="[10, 20, 30, 40]"
+      :page-size="10"
+      layout="total, sizes, prev, pager, next, jumper"
+      :total="total"
+    ></el-pagination>
+
+    <!-- <el-row type="flex" class="row-bg" justify="end">
       <el-col :span="10"><div class="block">
       <el-pagination prev-text="< 上一页" next-text="下一页 >" layout="prev, pager, next" :total="1000">
       </el-pagination>  
       </div></el-col>
 
-      <!-- <el-col :span="24" style="margin: 20px 0" class="fbox">
+      <el-col :span="24" style="margin: 20px 0" class="fbox">
         <span class="zbox">
           <el-button class="el-icon-arrow-left">上一页</el-button>
           <el-pagination style="display:inline-block;" layout="prev, pager, next" :total="1000"></el-pagination>
@@ -339,11 +371,16 @@
             下一页 <i class="el-icon-arrow-right"></i>
           </el-button>
         </span>
+<<<<<<< HEAD
+      </el-col> 
+    </el-row>-->
+=======
       </el-col> -->
     </el-row>
 
 
     
+>>>>>>> 0a53c01cdb0c73247d82a2a4c5c30dc2f1a9764d
   </div>
 </template>
 
@@ -358,6 +395,9 @@ export default {
   },
   data() {
     return {
+      pageSize: 10,
+      pageNum: 1,
+      total: 0,
       tableData: [
         {
           name: "携程",
@@ -372,7 +412,11 @@ export default {
       value8: "",
       value9: "",
 
+<<<<<<< HEAD
+      // 自定义选择器
+=======
         // 自定义选择器
+>>>>>>> 0a53c01cdb0c73247d82a2a4c5c30dc2f1a9764d
       options: [
         {
           label: "成人",
@@ -385,11 +429,19 @@ export default {
               value: "1",
               label: "1"
             },
+<<<<<<< HEAD
+            {
+              value: "2",
+              label: "2"
+            },
+            {
+=======
              {
               value: "2",
               label: "2"
             },
              {
+>>>>>>> 0a53c01cdb0c73247d82a2a4c5c30dc2f1a9764d
               value: "3",
               label: "3"
             }
@@ -419,6 +471,11 @@ export default {
       ],
       value: "",
 
+<<<<<<< HEAD
+      // 景点，展示在酒店的搜索的区域位置
+      text: [],
+=======
+>>>>>>> 0a53c01cdb0c73247d82a2a4c5c30dc2f1a9764d
 
      // 景点，展示在酒店的搜索的区域位置
       text: [],
@@ -432,12 +489,51 @@ export default {
       value11: 30
     };
   },
+  methods: {
+    handleSizeChange(val) {
+      this.pageSize = val;
+      console.log(`每页 ${val} 条`);
+      this.$axios({
+        url: "/hotels",
+        params: {
+          _limit: this.pageSize,
+          _start: this.pageNum
+        }
+      }).then(res => {
+        console.log(res);
+        this.data = res.data.data;
+        this.total = res.data.total;
+      });
+    },
+    handleCurrentChange(val) {
+      console.log(`当前页: ${val}`);
+      this.pageNum = val;
+      console.log(`每页 ${val} 条`);
+      this.$axios({
+        url: "/hotels",
+        params: {
+          _limit: this.pageSize,
+          _start: this.pageNum
+        }
+      }).then(res => {
+        console.log(res);
+        this.data = res.data.data;
+        this.total = res.data.total;
+      });
+    }
+  },
   mounted() {
     setTimeout(() => {
       console.log(this.data, 564123);
+      console.log(123456789, this.data);
+      this.total = 121;
     }, 200);
 
+<<<<<<< HEAD
+    this.total = this.data.total;
+=======
 
+>>>>>>> 0a53c01cdb0c73247d82a2a4c5c30dc2f1a9764d
     this.$axios({
       url: "cities",
       // 路由的url参数
@@ -458,12 +554,18 @@ export default {
 </script>
 
 <style  scoped lang="less">
+<<<<<<< HEAD
+.addressarea {
+  color: gray;
+  margin-bottom: 50px;
+=======
 
 
 .addressarea{
   color: gray;
   margin-bottom: 50px;
  
+>>>>>>> 0a53c01cdb0c73247d82a2a4c5c30dc2f1a9764d
 }
 .tb .el-divider {
   margin: 15px 0 15px 0;
@@ -476,6 +578,9 @@ export default {
 .choose > el-col {
   padding-left: 20px;
   padding-right: 20px;
+}
+.fenye {
+  margin-top: 20px;
 }
 
 .el-col8 {
@@ -495,8 +600,13 @@ export default {
   }
 }
 
+<<<<<<< HEAD
+.huangguan > i {
+  color: rgb(247, 186, 42);
+=======
 .huangguan>i{
  color: rgb(247, 186, 42);
+>>>>>>> 0a53c01cdb0c73247d82a2a4c5c30dc2f1a9764d
 }
 
 .el-slider {
@@ -552,8 +662,8 @@ export default {
   padding-bottom: 20px;
   border-bottom: 1px solid #dcdfe6;
 }
-.row-bg{
-  margin:20px 0;
+.row-bg {
+  margin: 20px 0;
 }
 /deep/.btn-prev {
   width: 85px;
@@ -561,15 +671,15 @@ export default {
   border: 1px solid #ddd;
   border-radius: 2px;
   > span {
-  line-height: 28px;
+    line-height: 28px;
   }
 }
-/deep/.btn-next{
+/deep/.btn-next {
   width: 85px;
   height: 28px;
-  border:1px solid #ddd;
-  >span{
-line-height: 28px;
+  border: 1px solid #ddd;
+  > span {
+    line-height: 28px;
   }
 }
 // .fbox {
@@ -578,5 +688,4 @@ line-height: 28px;
 //     float: right;
 //   }
 // }
-
 </style>
