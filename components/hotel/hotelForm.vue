@@ -18,7 +18,11 @@
         ></el-date-picker>
       </el-form-item>
 
+<<<<<<< HEAD
       <!-- 自定义选择器  -->
+=======
+     <!-- 自定义选择器  -->
+>>>>>>> 0a53c01cdb0c73247d82a2a4c5c30dc2f1a9764d
       <el-form-item>
         <el-select v-model="value" placeholder="人数未定">
           <el-option-group v-for="group in options" :key="group.label" :label="group.label">
@@ -39,7 +43,11 @@
     </el-form>
 
     <!-- 地图蓝 -->
+<<<<<<< HEAD
     <!-- 地址区域 -->
+=======
+     <!-- 地址区域 -->
+>>>>>>> 0a53c01cdb0c73247d82a2a4c5c30dc2f1a9764d
     <el-row type="flex" :gutter="20" class="addressarea">
       <!-- 地图栏 -->
       <el-col class="left" :span="14">
@@ -59,7 +67,11 @@
         <el-row type="flex">
           <el-col :span="3">均价 :</el-col>
           <el-col :span="21" class="adress">
+<<<<<<< HEAD
             <el-row type="flex">
+=======
+            <el-row type="flex" >
+>>>>>>> 0a53c01cdb0c73247d82a2a4c5c30dc2f1a9764d
               <div class="huangguan">
                 <i class="iconfont iconhuangguan"></i>
                 <i class="iconfont iconhuangguan"></i>
@@ -86,11 +98,19 @@
         </el-row>
       </el-col>
 
+<<<<<<< HEAD
       <!-- 地图 -->
+=======
+       <!-- 地图 -->
+>>>>>>> 0a53c01cdb0c73247d82a2a4c5c30dc2f1a9764d
       <el-col class="right" :span="10">
         <Map />
       </el-col>
-    </el-row>
+      </el-row>
+
+     
+   
+
 
     <!-- 选取信息栏 -->
     <el-row class="choose" type="flex">
@@ -351,8 +371,16 @@
             下一页 <i class="el-icon-arrow-right"></i>
           </el-button>
         </span>
+<<<<<<< HEAD
       </el-col> 
     </el-row>-->
+=======
+      </el-col> -->
+    </el-row>
+
+
+    
+>>>>>>> 0a53c01cdb0c73247d82a2a4c5c30dc2f1a9764d
   </div>
 </template>
 
@@ -384,7 +412,11 @@ export default {
       value8: "",
       value9: "",
 
+<<<<<<< HEAD
       // 自定义选择器
+=======
+        // 自定义选择器
+>>>>>>> 0a53c01cdb0c73247d82a2a4c5c30dc2f1a9764d
       options: [
         {
           label: "成人",
@@ -397,11 +429,19 @@ export default {
               value: "1",
               label: "1"
             },
+<<<<<<< HEAD
             {
               value: "2",
               label: "2"
             },
             {
+=======
+             {
+              value: "2",
+              label: "2"
+            },
+             {
+>>>>>>> 0a53c01cdb0c73247d82a2a4c5c30dc2f1a9764d
               value: "3",
               label: "3"
             }
@@ -431,9 +471,16 @@ export default {
       ],
       value: "",
 
+<<<<<<< HEAD
       // 景点，展示在酒店的搜索的区域位置
       text: [],
+=======
+>>>>>>> 0a53c01cdb0c73247d82a2a4c5c30dc2f1a9764d
 
+     // 景点，展示在酒店的搜索的区域位置
+      text: [],
+ 
+ 
       //Slider 滑块
       value2: 50,
 
@@ -482,7 +529,11 @@ export default {
       this.total = 121;
     }, 200);
 
+<<<<<<< HEAD
     this.total = this.data.total;
+=======
+
+>>>>>>> 0a53c01cdb0c73247d82a2a4c5c30dc2f1a9764d
     this.$axios({
       url: "cities",
       // 路由的url参数
@@ -503,9 +554,18 @@ export default {
 </script>
 
 <style  scoped lang="less">
+<<<<<<< HEAD
 .addressarea {
   color: gray;
   margin-bottom: 50px;
+=======
+
+
+.addressarea{
+  color: gray;
+  margin-bottom: 50px;
+ 
+>>>>>>> 0a53c01cdb0c73247d82a2a4c5c30dc2f1a9764d
 }
 .tb .el-divider {
   margin: 15px 0 15px 0;
@@ -540,8 +600,13 @@ export default {
   }
 }
 
+<<<<<<< HEAD
 .huangguan > i {
   color: rgb(247, 186, 42);
+=======
+.huangguan>i{
+ color: rgb(247, 186, 42);
+>>>>>>> 0a53c01cdb0c73247d82a2a4c5c30dc2f1a9764d
 }
 
 .el-slider {
