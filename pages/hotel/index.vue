@@ -44,7 +44,7 @@ export default {
                  name:'南京'
                }
             }).then(res => {
-              console.log(res);
+              // console.log(213,res.data);
             });
             // 参数形式 获取接口路径
        var url = this.$route.fullPath
@@ -52,7 +52,7 @@ export default {
           this.$axios({  // 使用$axios 请求后台数据
             url,  
           }).then(res => {
-            // console.log(res);
+            console.log(1234,res);
             this.hotelData = res.data.data
             
           })
