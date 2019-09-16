@@ -19,7 +19,7 @@
       </el-form-item>
 
       <!-- 自定义选择器  -->
-      <el-form-item>
+      <!-- <el-form-item>
         <el-select placeholder="请选择">
           <el-option-group v-for="group in options3" :key="group.label" :label="group.label">
             <el-option
@@ -30,7 +30,7 @@
             ></el-option>
           </el-option-group>
         </el-select>
-      </el-form-item>
+      </el-form-item>-->
 
       <!-- 按钮 -->
       <el-form-item>
@@ -55,6 +55,7 @@
 
         <el-slider class v-model="value2"></el-slider>
       </el-col>
+
       <!-- 住宿等级 -->
       <el-col class="el-col6" :span="6">
         <el-row>
@@ -82,9 +83,6 @@
           </el-dropdown-menu>
         </el-dropdown>
       </el-col>
-
-
-
 
       <!-- 住宿类型 -->
       <el-col class="el-col6" :span="6">
@@ -126,6 +124,7 @@
             <div class="grid-content bg-purple-light"></div>
           </el-col>
         </el-row>
+
         <!-- 不限 1 -->
         <el-dropdown>
           <span class="el-dropdown-link">
@@ -170,15 +169,15 @@
       </el-col>
     </el-row>
 
-      <!-- 酒店介绍 -->
+    <!-- 酒店介绍 -->
     <el-row
       type="flex"
       justify="space-between"
       class="underline"
-      v-for="(item,index) in data"
+      v-for="(item, index) in data"
       :key="index"
     >
-          <!-- 图片 -->
+      <!-- 图片 -->
       <el-col :span="8">
         <el-aside style="width:320px">
           <span>
@@ -186,16 +185,18 @@
           </span>
         </el-aside>
       </el-col>
-          <!-- 文体 -->
+      <!-- 文体 -->
       <el-col :span="11" style="margin-right:20px">
         <el-main class="el-main-h2">
           <h2>{{item.name}}</h2>
           <div class="el-main-color">
             <span>{{item.alias}}</span>
+            <div v-if="item.hotellevel">
+            <span v-for="(item3, index3) in item.hotellevel"
+            :key="index3">
             <i class="iconfont iconhuangguan" style="color:rgb(247,186,42);"></i>
-            <i class="iconfont iconhuangguan" style="color:rgb(247,186,42);"></i>
-            <i class="iconfont iconhuangguan" style="color:rgb(247,186,42);"></i>
-            <span>经济型</span>
+            </span></div>
+            <span>77777</span>
           </div>
         </el-main>
         <el-row style="margin: 0 20px;">
@@ -221,11 +222,12 @@
         <el-row style="margin: 10px 20px; color:#666;">
           <el-col>
             <i class="iconfont iconlocation"></i>位于：
-            <span style="width:100%"> {{item.address}} </span>
+            <span style="width:100%">{{item.address}}</span>
           </el-col>
         </el-row>
       </el-col>
 
+      <!-- 右边广告栏 -->
       <el-col :span="+5">
         <el-row>
           <el-col :span="24" style="padding-top:20px" class="tb">
@@ -242,16 +244,18 @@
               justify="space-between"
               style="padding:20px 0 0 0;"
               class="font-color"
+              v-for="(item1, index) in item.products"
+              :key="index"
             >
-              <span>{{item.products.name}}</span>
+              <span>{{item1.name}}</span>
               <div>
-                <span style="color:#ff9900">￥222</span>起
+                <span style="color:#ff9900">￥{{item1.price}}</span>起
                 <i class="el-icon-arrow-right"></i>
               </div>
             </el-row>
             <el-divider></el-divider>
 
-            <el-row type="flex" justify="space-between" class="font-color">
+            <!-- <el-row type="flex" justify="space-between" class="font-color">
               <span>7777</span>
               <div>
                 <span style="color:#ff9900">￥222</span>起
@@ -267,16 +271,27 @@
                 <i class="el-icon-arrow-right"></i>
               </div>
             </el-row>
-            <el-divider></el-divider>
+            <el-divider></el-divider>-->
           </el-col>
         </el-row>
       </el-col>
     </el-row>
-    <div class="block">
-      <el-pagination prev-text="上一页" next-text="下一页" layout="prev, pager, next" :total="1000">
-        
-      </el-pagination>
-    </div>
+    <el-row type="flex" class="row-bg" justify="end">
+      <el-col :span="10"><div class="block">
+      <el-pagination prev-text="< 上一页" next-text="下一页 >" layout="prev, pager, next" :total="1000">
+      </el-pagination>  
+      </div></el-col>
+
+      <!-- <el-col :span="24" style="margin: 20px 0" class="fbox">
+        <span class="zbox">
+          <el-button class="el-icon-arrow-left">上一页</el-button>
+          <el-pagination style="display:inline-block;" layout="prev, pager, next" :total="1000"></el-pagination>
+          <el-button>
+            下一页 <i class="el-icon-arrow-right"></i>
+          </el-button>
+        </span>
+      </el-col> -->
+    </el-row>
   </div>
 </template>
 
@@ -306,42 +321,42 @@ export default {
       value9: "",
 
       // 自定义选择器
-      options3: [
-        {
-          label: "热门城市",
-          options: [
-            {
-              value: "Shanghai",
-              label: "上海"
-            },
-            {
-              value: "Beijing",
-              label: "北京"
-            }
-          ]
-        },
-        {
-          label: "城市名",
-          options: [
-            {
-              value: "Chengdu",
-              label: "成都"
-            },
-            {
-              value: "Shenzhen",
-              label: "深圳"
-            },
-            {
-              value: "Guangzhou",
-              label: "广州"
-            },
-            {
-              value: "Dalian",
-              label: "大连"
-            }
-          ]
-        }
-      ],
+      // options3: [
+      //   {
+      //     label: "热门城市",
+      //     options: [
+      //       {
+      //         value: "Shanghai",
+      //         label: "上海"
+      //       },
+      //       {
+      //         value: "Beijing",
+      //         label: "北京"
+      //       }
+      //     ]
+      //   },
+      //   {
+      //     label: "城市名",
+      //     options: [
+      //       {
+      //         value: "Chengdu",
+      //         label: "成都"
+      //       },
+      //       {
+      //         value: "Shenzhen",
+      //         label: "深圳"
+      //       },
+      //       {
+      //         value: "Guangzhou",
+      //         label: "广州"
+      //       },
+      //       {
+      //         value: "Dalian",
+      //         label: "大连"
+      //       }
+      //     ]
+      //   }
+      // ],
 
       //Slider 滑块
       value2: 50,
@@ -437,8 +452,31 @@ export default {
   padding-bottom: 20px;
   border-bottom: 1px solid #dcdfe6;
 }
-.block{
-  float: right;
-  border: 1px solid #dcdfe6;
+.row-bg{
+  margin:20px 0;
 }
+/deep/.btn-prev {
+  width: 85px;
+  height: 28px;
+  border: 1px solid #ddd;
+  border-radius: 2px;
+  > span {
+  line-height: 28px;
+  }
+}
+/deep/.btn-next{
+  width: 85px;
+  height: 28px;
+  border:1px solid #ddd;
+  >span{
+line-height: 28px;
+  }
+}
+// .fbox {
+//   overflow: hidden;
+//   .zbox {
+//     float: right;
+//   }
+// }
+
 </style>
