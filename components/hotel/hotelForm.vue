@@ -12,16 +12,16 @@
         <el-date-picker
           v-model="value9"
           type="daterange"
-          start-placeholder="开始日期"
-          end-placeholder="结束日期"
-          default-value="2010-10-01"
+          start-placeholder="入住日期"
+          end-placeholder="离店日期"
+          default-value="2019-10-01"
         ></el-date-picker>
       </el-form-item>
 
-      <!-- 自定义选择器  -->
-      <!-- <el-form-item>
-        <el-select placeholder="请选择">
-          <el-option-group v-for="group in options3" :key="group.label" :label="group.label">
+     <!-- 自定义选择器  -->
+      <el-form-item>
+        <el-select v-model="value" placeholder="人数未定">
+          <el-option-group v-for="group in options" :key="group.label" :label="group.label">
             <el-option
               v-for="item in group.options"
               :key="item.value"
@@ -30,7 +30,7 @@
             ></el-option>
           </el-option-group>
         </el-select>
-      </el-form-item>-->
+      </el-form-item>
 
       <!-- 按钮 -->
       <el-form-item>
@@ -39,13 +39,62 @@
     </el-form>
 
     <!-- 地图蓝 -->
-    <el-row>
-      <el-col :span="12">asdasd</el-col>
+     <!-- 地址区域 -->
+    <el-row type="flex" :gutter="20" class="addressarea">
+      <!-- 地图栏 -->
+      <el-col class="left" :span="14">
+        <el-row type="flex">
+          <el-col :span="3">区域 :</el-col>
+          <el-col :span="21" class="adress">
+            <i>全部</i>
+            <span v-for="(item,index) in text" :key="index">{{item.name}}</span>
+          </el-col>
+        </el-row>
+        <el-row type="flex">
+          <el-col :span="3">攻略 :</el-col>
+          <el-col :span="21" class="adress">
+            <span>北京，你想要的都能在这找到。博古通今，兼容并蓄，天下一城，如是帝都。 景点以故宫为中心向四处辐射；地铁便宜通畅，而且覆盖绝大多数景点。 由于早上有天安门升旗仪式，所以大多数人选择在天安门附近住宿。</span>
+          </el-col>
+        </el-row>
+        <el-row type="flex">
+          <el-col :span="3">均价 :</el-col>
+          <el-col :span="21" class="adress">
+            <el-row type="flex" >
+              <div class="huangguan">
+                <i class="iconfont iconhuangguan"></i>
+                <i class="iconfont iconhuangguan"></i>
+                <i class="iconfont iconhuangguan"></i>
+                <span>¥332</span>
+              </div>
+              <div class="huangguan">
+                <i class="iconfont iconhuangguan"></i>
+                <i class="iconfont iconhuangguan"></i>
+                <i class="iconfont iconhuangguan"></i>
+                <i class="iconfont iconhuangguan"></i>
+                <span>¥521</span>
+              </div>
+              <div class="huangguan">
+                <i class="iconfont iconhuangguan"></i>
+                <i class="iconfont iconhuangguan"></i>
+                <i class="iconfont iconhuangguan"></i>
+                <i class="iconfont iconhuangguan"></i>
+                <i class="iconfont iconhuangguan"></i>
+                <span>¥768</span>
+              </div>
+            </el-row>
+          </el-col>
+        </el-row>
+      </el-col>
 
-      <el-col :span="12">
+       <!-- 地图 -->
+      <el-col class="right" :span="10">
         <Map />
       </el-col>
-    </el-row>
+      </el-row>
+
+     
+   
+
 
     <!-- 选取信息栏 -->
     <el-row class="choose" type="flex">
@@ -292,6 +341,9 @@
         </span>
       </el-col> -->
     </el-row>
+
+
+    
   </div>
 </template>
 
@@ -320,44 +372,58 @@ export default {
       value8: "",
       value9: "",
 
-      // 自定义选择器
-      // options3: [
-      //   {
-      //     label: "热门城市",
-      //     options: [
-      //       {
-      //         value: "Shanghai",
-      //         label: "上海"
-      //       },
-      //       {
-      //         value: "Beijing",
-      //         label: "北京"
-      //       }
-      //     ]
-      //   },
-      //   {
-      //     label: "城市名",
-      //     options: [
-      //       {
-      //         value: "Chengdu",
-      //         label: "成都"
-      //       },
-      //       {
-      //         value: "Shenzhen",
-      //         label: "深圳"
-      //       },
-      //       {
-      //         value: "Guangzhou",
-      //         label: "广州"
-      //       },
-      //       {
-      //         value: "Dalian",
-      //         label: "大连"
-      //       }
-      //     ]
-      //   }
-      // ],
+        // 自定义选择器
+      options: [
+        {
+          label: "成人",
+          options: [
+            {
+              value: "0",
+              label: "0"
+            },
+            {
+              value: "1",
+              label: "1"
+            },
+             {
+              value: "2",
+              label: "2"
+            },
+             {
+              value: "3",
+              label: "3"
+            }
+          ]
+        },
+        {
+          label: "儿童",
+          options: [
+            {
+              value: "0",
+              label: "0"
+            },
+            {
+              value: "1",
+              label: "1"
+            },
+            {
+              value: "2",
+              label: "2"
+            },
+            {
+              value: "3",
+              label: "3"
+            }
+          ]
+        }
+      ],
+      value: "",
 
+
+     // 景点，展示在酒店的搜索的区域位置
+      text: [],
+ 
+ 
       //Slider 滑块
       value2: 50,
 
@@ -370,6 +436,19 @@ export default {
     setTimeout(() => {
       console.log(this.data, 564123);
     }, 200);
+
+
+    this.$axios({
+      url: "cities",
+      // 路由的url参数
+      params: {
+        name: "南京"
+      }
+    }).then(res => {
+      this.text = res.data.data[0].scenics;
+
+      console.log(this.text);
+    });
   },
   // 组件
   components: {
@@ -379,6 +458,13 @@ export default {
 </script>
 
 <style  scoped lang="less">
+
+
+.addressarea{
+  color: gray;
+  margin-bottom: 50px;
+ 
+}
 .tb .el-divider {
   margin: 15px 0 15px 0;
 }
@@ -397,6 +483,20 @@ export default {
 }
 .el-col8-left {
   padding-right: 120px;
+}
+
+.adress {
+  width: 100%;
+}
+
+.left {
+  span {
+    padding: 0 10px;
+  }
+}
+
+.huangguan>i{
+ color: rgb(247, 186, 42);
 }
 
 .el-slider {
