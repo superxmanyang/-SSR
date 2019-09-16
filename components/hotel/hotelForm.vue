@@ -12,16 +12,16 @@
         <el-date-picker
           v-model="value9"
           type="daterange"
-          start-placeholder="开始日期"
-          end-placeholder="结束日期"
-          default-value="2010-10-01"
+          start-placeholder="入住日期"
+          end-placeholder="离店日期"
+          default-value="2019-10-01"
         ></el-date-picker>
       </el-form-item>
 
-      <!-- 自定义选择器  -->
+     <!-- 自定义选择器  -->
       <el-form-item>
-        <el-select placeholder="请选择">
-          <el-option-group v-for="group in options3" :key="group.label" :label="group.label">
+        <el-select v-model="value" placeholder="人数未定">
+          <el-option-group v-for="group in options" :key="group.label" :label="group.label">
             <el-option
               v-for="item in group.options"
               :key="item.value"
@@ -39,13 +39,62 @@
     </el-form>
 
     <!-- 地图蓝 -->
-    <el-row>
-      <el-col :span="12">asdasd</el-col>
+     <!-- 地址区域 -->
+    <el-row type="flex" :gutter="20" class="addressarea">
+      <!-- 地图栏 -->
+      <el-col class="left" :span="14">
+        <el-row type="flex">
+          <el-col :span="3">区域 :</el-col>
+          <el-col :span="21" class="adress">
+            <i>全部</i>
+            <span v-for="(item,index) in text" :key="index">{{item.name}}</span>
+          </el-col>
+        </el-row>
+        <el-row type="flex">
+          <el-col :span="3">攻略 :</el-col>
+          <el-col :span="21" class="adress">
+            <span>北京，你想要的都能在这找到。博古通今，兼容并蓄，天下一城，如是帝都。 景点以故宫为中心向四处辐射；地铁便宜通畅，而且覆盖绝大多数景点。 由于早上有天安门升旗仪式，所以大多数人选择在天安门附近住宿。</span>
+          </el-col>
+        </el-row>
+        <el-row type="flex">
+          <el-col :span="3">均价 :</el-col>
+          <el-col :span="21" class="adress">
+            <el-row type="flex" >
+              <div class="huangguan">
+                <i class="iconfont iconhuangguan"></i>
+                <i class="iconfont iconhuangguan"></i>
+                <i class="iconfont iconhuangguan"></i>
+                <span>¥332</span>
+              </div>
+              <div class="huangguan">
+                <i class="iconfont iconhuangguan"></i>
+                <i class="iconfont iconhuangguan"></i>
+                <i class="iconfont iconhuangguan"></i>
+                <i class="iconfont iconhuangguan"></i>
+                <span>¥521</span>
+              </div>
+              <div class="huangguan">
+                <i class="iconfont iconhuangguan"></i>
+                <i class="iconfont iconhuangguan"></i>
+                <i class="iconfont iconhuangguan"></i>
+                <i class="iconfont iconhuangguan"></i>
+                <i class="iconfont iconhuangguan"></i>
+                <span>¥768</span>
+              </div>
+            </el-row>
+          </el-col>
+        </el-row>
+      </el-col>
 
-      <el-col :span="12">
+       <!-- 地图 -->
+      <el-col class="right" :span="10">
         <Map />
       </el-col>
-    </el-row>
+      </el-row>
+
+     
+   
+
 
     <!-- 选取信息栏 -->
     <el-row class="choose" type="flex">
@@ -55,6 +104,7 @@
 
         <el-slider class v-model="value2"></el-slider>
       </el-col>
+
       <!-- 住宿等级 -->
       <el-col class="el-col6" :span="6">
         <el-row>
@@ -82,9 +132,6 @@
           </el-dropdown-menu>
         </el-dropdown>
       </el-col>
-
-
-
 
       <!-- 住宿类型 -->
       <el-col class="el-col6" :span="6">
@@ -126,6 +173,7 @@
             <div class="grid-content bg-purple-light"></div>
           </el-col>
         </el-row>
+
         <!-- 不限 1 -->
         <el-dropdown>
           <span class="el-dropdown-link">
@@ -170,15 +218,15 @@
       </el-col>
     </el-row>
 
-      <!-- 酒店介绍 -->
+    <!-- 酒店介绍 -->
     <el-row
       type="flex"
       justify="space-between"
       class="underline"
-      v-for="(item,index) in data"
+      v-for="(item, index) in data"
       :key="index"
     >
-          <!-- 图片 -->
+      <!-- 图片 -->
       <el-col :span="8">
         <el-aside style="width:320px">
           <span>
@@ -186,16 +234,18 @@
           </span>
         </el-aside>
       </el-col>
-          <!-- 文体 -->
+      <!-- 文体 -->
       <el-col :span="11" style="margin-right:20px">
         <el-main class="el-main-h2">
           <h2>{{item.name}}</h2>
           <div class="el-main-color">
             <span>{{item.alias}}</span>
+            <div v-if="item.hotellevel">
+            <span v-for="(item3, index3) in item.hotellevel"
+            :key="index3">
             <i class="iconfont iconhuangguan" style="color:rgb(247,186,42);"></i>
-            <i class="iconfont iconhuangguan" style="color:rgb(247,186,42);"></i>
-            <i class="iconfont iconhuangguan" style="color:rgb(247,186,42);"></i>
-            <span>经济型</span>
+            </span></div>
+            <span>77777</span>
           </div>
         </el-main>
         <el-row style="margin: 0 20px;">
@@ -221,11 +271,12 @@
         <el-row style="margin: 10px 20px; color:#666;">
           <el-col>
             <i class="iconfont iconlocation"></i>位于：
-            <span style="width:100%"> {{item.address}} </span>
+            <span style="width:100%">{{item.address}}</span>
           </el-col>
         </el-row>
       </el-col>
 
+      <!-- 右边广告栏 -->
       <el-col :span="+5">
         <el-row>
           <el-col :span="24" style="padding-top:20px" class="tb">
@@ -242,16 +293,18 @@
               justify="space-between"
               style="padding:20px 0 0 0;"
               class="font-color"
+              v-for="(item1, index) in item.products"
+              :key="index"
             >
-              <span>{{item.products.name}}</span>
+              <span>{{item1.name}}</span>
               <div>
-                <span style="color:#ff9900">￥222</span>起
+                <span style="color:#ff9900">￥{{item1.price}}</span>起
                 <i class="el-icon-arrow-right"></i>
               </div>
             </el-row>
             <el-divider></el-divider>
 
-            <el-row type="flex" justify="space-between" class="font-color">
+            <!-- <el-row type="flex" justify="space-between" class="font-color">
               <span>7777</span>
               <div>
                 <span style="color:#ff9900">￥222</span>起
@@ -267,16 +320,30 @@
                 <i class="el-icon-arrow-right"></i>
               </div>
             </el-row>
-            <el-divider></el-divider>
+            <el-divider></el-divider>-->
           </el-col>
         </el-row>
       </el-col>
     </el-row>
-    <div class="block">
-      <el-pagination prev-text="上一页" next-text="下一页" layout="prev, pager, next" :total="1000">
-        <div></div>
-      </el-pagination>
-    </div>
+    <el-row type="flex" class="row-bg" justify="end">
+      <el-col :span="10"><div class="block">
+      <el-pagination prev-text="< 上一页" next-text="下一页 >" layout="prev, pager, next" :total="1000">
+      </el-pagination>  
+      </div></el-col>
+
+      <!-- <el-col :span="24" style="margin: 20px 0" class="fbox">
+        <span class="zbox">
+          <el-button class="el-icon-arrow-left">上一页</el-button>
+          <el-pagination style="display:inline-block;" layout="prev, pager, next" :total="1000"></el-pagination>
+          <el-button>
+            下一页 <i class="el-icon-arrow-right"></i>
+          </el-button>
+        </span>
+      </el-col> -->
+    </el-row>
+
+
+    
   </div>
 </template>
 
@@ -305,44 +372,58 @@ export default {
       value8: "",
       value9: "",
 
-      // 自定义选择器
-      options3: [
+        // 自定义选择器
+      options: [
         {
-          label: "热门城市",
+          label: "成人",
           options: [
             {
-              value: "Shanghai",
-              label: "上海"
+              value: "0",
+              label: "0"
             },
             {
-              value: "Beijing",
-              label: "北京"
+              value: "1",
+              label: "1"
+            },
+             {
+              value: "2",
+              label: "2"
+            },
+             {
+              value: "3",
+              label: "3"
             }
           ]
         },
         {
-          label: "城市名",
+          label: "儿童",
           options: [
             {
-              value: "Chengdu",
-              label: "成都"
+              value: "0",
+              label: "0"
             },
             {
-              value: "Shenzhen",
-              label: "深圳"
+              value: "1",
+              label: "1"
             },
             {
-              value: "Guangzhou",
-              label: "广州"
+              value: "2",
+              label: "2"
             },
             {
-              value: "Dalian",
-              label: "大连"
+              value: "3",
+              label: "3"
             }
           ]
         }
       ],
+      value: "",
 
+
+     // 景点，展示在酒店的搜索的区域位置
+      text: [],
+ 
+ 
       //Slider 滑块
       value2: 50,
 
@@ -355,6 +436,19 @@ export default {
     setTimeout(() => {
       console.log(this.data, 564123);
     }, 200);
+
+
+    this.$axios({
+      url: "cities",
+      // 路由的url参数
+      params: {
+        name: "南京"
+      }
+    }).then(res => {
+      this.text = res.data.data[0].scenics;
+
+      console.log(this.text);
+    });
   },
   // 组件
   components: {
@@ -364,6 +458,13 @@ export default {
 </script>
 
 <style  scoped lang="less">
+
+
+.addressarea{
+  color: gray;
+  margin-bottom: 50px;
+ 
+}
 .tb .el-divider {
   margin: 15px 0 15px 0;
 }
@@ -382,6 +483,20 @@ export default {
 }
 .el-col8-left {
   padding-right: 120px;
+}
+
+.adress {
+  width: 100%;
+}
+
+.left {
+  span {
+    padding: 0 10px;
+  }
+}
+
+.huangguan>i{
+ color: rgb(247, 186, 42);
 }
 
 .el-slider {
@@ -437,4 +552,31 @@ export default {
   padding-bottom: 20px;
   border-bottom: 1px solid #dcdfe6;
 }
+.row-bg{
+  margin:20px 0;
+}
+/deep/.btn-prev {
+  width: 85px;
+  height: 28px;
+  border: 1px solid #ddd;
+  border-radius: 2px;
+  > span {
+  line-height: 28px;
+  }
+}
+/deep/.btn-next{
+  width: 85px;
+  height: 28px;
+  border:1px solid #ddd;
+  >span{
+line-height: 28px;
+  }
+}
+// .fbox {
+//   overflow: hidden;
+//   .zbox {
+//     float: right;
+//   }
+// }
+
 </style>

@@ -140,6 +140,7 @@ export default {
       console.log(index);
       this.form.title = this.locList[index].title;
       this.form.city = this.locList[index].city;
+      this.form.code = this.locList[index].code;
       this.$refs.vueEditor.editor.root.innerHTML = this.locList[index].content;
       console.log(this.$refs.vueEditor.editor.root.innerHTML);
     },
@@ -315,7 +316,7 @@ export default {
       });
     },
     handelShanChu(index) {
-      this.$confirm("此操作将永久删除该文件, 是否继续?", "提示", {
+      this.$confirm("您确定要删除该草稿吗?", "提示", {
         confirmButtonText: "确定",
         cancelButtonText: "取消",
         type: "warning"
@@ -394,6 +395,7 @@ export default {
     }
     .caogao {
       color: orange;
+
       cursor: pointer;
       &:hover {
         text-decoration: underline;
@@ -402,7 +404,7 @@ export default {
   }
   .caogaoxiang {
     width: 150px;
-    padding: 10px 20px 0px 10px;
+    padding: 10px 20px 10px 10px;
     color: #666;
     position: absolute;
     top: 20px;
@@ -411,6 +413,7 @@ export default {
     margin-top: 5px;
     .caogao {
       font-size: 16px;
+      width: 150px;
       :nth-child(1) {
         &:hover {
           color: orange;
@@ -421,12 +424,16 @@ export default {
       .shanchu {
         cursor: pointer;
         position: absolute;
-        right: 15px;
+        right: 5px;
         margin-top: 5px;
       }
       span {
         color: #666;
         font-weight: 500;
+        width: 100%;
+        // white-space: nowrap;
+        word-wrap: break-word;
+        word-break: normal;
       }
       p {
         font-size: 14px;
