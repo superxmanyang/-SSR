@@ -5,7 +5,8 @@ export const state = () => {
         newComment:'',
         recallInfo:{},
         // 刷新点赞
-        newlike:0
+        newlike:0,
+        data:[]
     }
 }
 
@@ -21,5 +22,11 @@ export const mutations = {
     },
     newlike(state,data){
         state.newlike=data
+    },
+    newdata(state,data){
+        state.data=data
     }
 };
+// 搜索接收返回数据
+// 用户管理
+

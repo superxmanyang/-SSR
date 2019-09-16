@@ -2,8 +2,11 @@
   <!-- 推荐文章列表 -->
   <div class="strategy">
     <div class="top">
-      <el-input placeholder="请输入想去的地方，比如'广州'" v-model="input" class="input-with-select">
-        <el-button slot="append" icon="el-icon-search"></el-button>
+      <el-input placeholder="请输入想去的地方，比如'广州'" v-model="cityName"   
+       class="input-with-select">
+        <el-button slot="append"
+        @click="init"
+         icon="el-icon-search"></el-button>
       </el-input>
       <div class="recomCityList">
         推荐：
@@ -19,8 +22,27 @@
 export default {
   data() {
     return {
-      input: ""
+      cityName: "",
+      compositions: []
     };
+  },
+  methods: {
+   init(){
+       // 获取文章列表
+    this.$axios({
+      url: "/posts",
+      params:{city:this.cityName}
+    }).then(res => {
+      console.log(res);  
+         this.compositions = res.data.data;
+         console.log(767,res)
+          this.$store.commit("post/newdata", res.data.data)
+      // console.log(this.composition);    
+    });
+    }
+  },
+  mounted(){
+    
   }
 };
 </script>
@@ -33,8 +55,8 @@ export default {
       font-size: 14px;
       height: 20px;
       line-height: 20px;
-     margin-top: 20px;
-     width: 700px;
+      width: 800px;
+      margin-top: 20px;
       // box-sizing: border-box;
     }
     // 推荐城市

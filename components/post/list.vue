@@ -12,7 +12,7 @@
         v-for="(item,index) in compositions"
         :key="index"
         :class="{less:item.images.length<3}"
-        :data = "item"
+        :data="item"
       >
         <nuxt-link :to="`/post/detail?id=${item.id}`">
           <!-- 标题 -->
@@ -70,24 +70,29 @@ export default {
       console.log(this.composition);
     });
   },
-  methods: {}
+  methods: {},
+  watch:{
+  '$store.state.post.data'(n,o){
+    console.log(123,n)
+    this.compositions=n
+  }
+}
 };
+
 </script>
 <style lang="less" scoped>
 .list {
-  width: 700px;
+  width: 800px;
   .top {
     align-items: center;
     padding: 10px 0;
     border-bottom: 1px solid #ddd;
-    width: 700px;
+    width: 800px;
     .left {
       color: orange;
       font-size: 18px;
       position: relative;
-      
     }
-    
   }
   // 列表
   .composition {
