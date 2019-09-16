@@ -64,7 +64,7 @@ export default {
 
 <style lang="less" scoped>
 .re {
-  padding: 20px 30px 0 110px;
+  padding: 20px 30px 0 0px;
   .recom {
   border-right: 0;
   width: 240px;

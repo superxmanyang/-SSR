@@ -13,7 +13,7 @@
         <!-- 文章列表 -->
         <list />
         <!-- 分页 -->
-        <paging />
+       
       </el-col>
     </el-row>
   </div>
@@ -42,3 +42,4 @@ export default {
   padding: 20px 0;
 
 }
+</style>
