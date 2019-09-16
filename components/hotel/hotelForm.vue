@@ -49,7 +49,14 @@
           <el-col :span="3">区域 :</el-col>
           <el-col :span="21" class="adress">
             <i>全部</i>
-            <span v-for="(item,index) in text" :key="index">{{item.name}}</span>
+            <span v-for="(item,index) in text" :key="index"
+             v-show="index<=i"
+            >{{item.name}}</span>
+            <div class="hidden">
+                  <i class=" el-icon-d-arrow-right" v-if="i<=10" style="color:#ff9900"></i>
+                  <i class=" el-icon-d-arrow-right" v-if="i>10" style="color:#ff9900"></i>
+                  <a @click="test">43个区域</a>
+                </div>
           </el-col>
         </el-row>
         <el-row type="flex">
@@ -374,6 +381,10 @@ export default {
   },
   data() {
     return {
+
+     i: 10,
+   
+
       pageSize: 10,
       pageNum: 1,
       total: 0,
@@ -457,6 +468,17 @@ export default {
     };
   },
   methods: {
+
+     test() {
+      //   console.log(this.data);
+      if (this.i > 10) {
+        this.i = 10;
+        console.log(this.i);
+      } else {
+        this.i = 999;
+        console.log(this.i);
+      }
+    },
     handleSizeChange(val) {
       this.pageSize = val;
       console.log(`每页 ${val} 条`);
